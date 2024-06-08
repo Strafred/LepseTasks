@@ -1,6 +1,7 @@
 package lepse;
 
 import lepse.BracketsTask.BracketsTaskSolver;
+import lepse.FormatCaseTask.FormatCaseTaskSolver;
 import lepse.SaddlePointTask.SaddlePointTaskSolver;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class Main {
                     SaddlePointTaskSolver.solve();
                     break;
                 case '3':
-//                    Task3.main();
+                    FormatCaseTaskSolver.solve();
                     break;
                 case '4':
 //                    Task4.main();
