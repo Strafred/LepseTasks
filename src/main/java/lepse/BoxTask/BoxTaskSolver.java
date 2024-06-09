@@ -1,64 +1,73 @@
 package lepse.BoxTask;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Set;
 
 public class BoxTaskSolver {
 
     public static void solve() {
         String filePath = "src/main/java/lepse/BoxTask/input.txt";
-        Set<Integer> dimensionsSet = new HashSet<>();
-        int[][] values = new int[6][6];
+        var dimsMap = new HashMap<Integer, Integer>();
+        int[][] values = new int[6][2];
+        var pairs = new int[6];
 
         try (var fileScanner = new Scanner(new File(filePath))) {
             for (int i = 0; i < 6; i++) {
                 int dim1 = fileScanner.nextInt();
-                dimensionsSet.add(dim1);
                 values[i][0] = dim1;
+                dimsMap.put(dim1, 0);
 
                 int dim2 = fileScanner.nextInt();
-                dimensionsSet.add(dim2);
                 values[i][1] = dim2;
+                dimsMap.put(dim2, 0);
             }
 
-            int[] dimensionsArray = new int[3];
-
-            if (dimensionsSet.size() == 3) {
-                var i = 0;
-                for (int dim : dimensionsSet) {
-                   dimensionsArray[i] = dim;
-                   i++;
-                }
-
-                if (hasTwo(dimensionsArray[0], dimensionsArray[1], values)
-                        && hasTwo(dimensionsArray[1], dimensionsArray[2], values)
-                        && hasTwo(dimensionsArray[0], dimensionsArray[2], values)) {
-                    System.out.println("Возможно");
-                } else {
-                    System.err.println("Невозможно");
-                }
-            } else {
+            if (dimsMap.keySet().size() > 3) {
                 System.err.println("Невозможно");
+                return;
             }
-        } catch (FileNotFoundException e) {
-            System.err.println(filePath + " not found");
+
+            for (int i = 0; i < 6; i++) {
+                for (int j = 0; j < 6; j++) {
+                    if (isPair(i, j, values)) {
+                        if ((pairs[i] < 2) && (pairs[j] < 2) && (pairs[i] == pairs[j])) {
+                            pairs[i]++;
+                            pairs[j]++;
+                            dimsMap.put(values[i][0], dimsMap.get(values[i][0]) + 1);
+                            dimsMap.put(values[i][1], dimsMap.get(values[i][1]) + 1);
+                        }
+                    }
+                }
+            }
+
+            for (var pair: pairs) {
+                if (pair != 2) {
+                    System.err.println("Невозможно");
+                    return;
+                }
+            }
+
+            for (var entry : dimsMap.entrySet()) {
+                if (entry.getValue() < 4) {
+                    System.err.println("Невозможно");
+                    return;
+                }
+            }
+
+            System.out.println("Возможно");
+
+        } catch (Exception e) {
+            System.err.println("Невозможно");
         }
     }
 
-    private static boolean hasTwo(int dim1, int dim2, int[][] values) {
-        var counter = 0;
-        for (int i = 0; i < 6; i++) {
-            if (values[i][0] != -1 && values[i][1] != -1) {
-                if ((values[i][0] == dim1 && values[i][1] == dim2) || (values[i][0] == dim2 && values[i][1] == dim1)) {
-                    counter++;
-                    values[i][0] = -1;
-                    values[i][1] = -1;
-                }
-            }
+    private static boolean isPair(int i, int j, int[][] values) {
+        if ((i != j)
+                && ((values[i][0] == values[j][0] && values[i][1] == values[j][1])
+                || (values[i][0] == values[j][1] && values[j][0] == values[i][1]))) {
+            return true;
         }
-        return counter == 2;
+        return false;
     }
 }
