@@ -1,5 +1,6 @@
 package lepse;
 
+import lepse.BoxTask.BoxTaskSolver;
 import lepse.BracketsTask.BracketsTaskSolver;
 import lepse.FormatCaseTask.FormatCaseTaskSolver;
 import lepse.SaddlePointTask.SaddlePointTaskSolver;
@@ -22,7 +23,7 @@ public class Main {
                     FormatCaseTaskSolver.solve();
                     break;
                 case '4':
-//                    Task4.main();
+                    BoxTaskSolver.solve();
                     break;
                 default:
                     System.out.println("Invalid task number");

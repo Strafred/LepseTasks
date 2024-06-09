@@ -3,3 +3,6 @@ tryToConvertMe
 unchanged
 InvalidMethod
 bad_VarName
+abaB
+aB
+a_b
