@@ -31,38 +31,38 @@ public class SaddlePointTaskSolver {
     }
 
     private static void findSaddlePoints(int[][] matrix, int rowsNumber, int columnsNumber) {
+        var minRowsValues = new int[rowsNumber];
+
+        for (int i = 0; i < rowsNumber; i++) {
+            var minValue = matrix[i][0];
+
+            for (int j = 0; j < columnsNumber; j++) {
+                if ((matrix[i][j] < minValue)) {
+                    minValue = matrix[i][j];
+                }
+            }
+            minRowsValues[i] = minValue;
+        }
+
+        var maxColsValues = new int[columnsNumber];
+
+        for (int i = 0; i < columnsNumber; i++) {
+            var maxValue = matrix[0][i];
+
+            for (int j = 0; j < rowsNumber; j++) {
+                if (matrix[j][i] > maxValue) {
+                    maxValue = matrix[j][i];
+                }
+            }
+            maxColsValues[i] = maxValue;
+        }
+
         for (int i = 0; i < rowsNumber; i++) {
             for (int j = 0; j < columnsNumber; j++) {
-                if (isSaddlePoint(matrix, i, j, rowsNumber, columnsNumber)) {
+                if (minRowsValues[i] == maxColsValues[j]) {
                     System.out.println("Saddle point: " + matrix[i][j] + " at row " + (i + 1) + " and column " + (j + 1));
                 }
             }
         }
-    }
-
-    private static boolean isSaddlePoint(int[][] matrix, int i, int j, int rowsNumber, int columnsNumber) {
-        return isMinInRow(matrix, i, j, columnsNumber) && isMaxInColumn(matrix, i, j, rowsNumber);
-    }
-
-    private static boolean isMinInRow(int[][] matrix, int i, int j, int columnsNumber) {
-        boolean isMin = true;
-        for (int k = 0; k < columnsNumber; k++) {
-            if (matrix[i][k] < matrix[i][j]) {
-                isMin = false;
-                break;
-            }
-        }
-        return isMin;
-    }
-
-    private static boolean isMaxInColumn(int[][] matrix, int i, int j, int rowsNumber) {
-        boolean isMax = true;
-        for (int k = 0; k < rowsNumber; k++) {
-            if (matrix[k][j] > matrix[i][j]) {
-                isMax = false;
-                break;
-            }
-        }
-        return isMax;
     }
 }
